@@ -7,7 +7,8 @@ export default authMiddleware({
   ignoredRoutes: [
     '/api/webhook/clerk',
     '/api/uploadthing'
-  ]
+  ],
+  debug: true
 });
  
 export const config = {
