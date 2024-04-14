@@ -4,11 +4,12 @@ export default authMiddleware({
   publicRoutes: [
     '/',
     '/api/webhooks/clerk',
+    '/api/webhooks/executeCode',
   ],
   ignoredRoutes: [
     '/api/uploadthing'
   ],
-  debug: true
+  
 });
  
 export const config = {
