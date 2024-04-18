@@ -50,11 +50,11 @@ export default function Home() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 mt-6">
             <SignedOut>
-            <Link href="/" className={buttonVariants()}>
+            <Link href="/sign-in" className={buttonVariants()}>
               Sign Up
             </Link>
             </SignedOut>
-            <Link href="/topics" className={buttonVariants({
+            <Link href="/course" className={buttonVariants({
                       variant: "ghost",
                     })} >
               Get Started &rarr;
