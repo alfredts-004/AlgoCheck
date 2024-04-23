@@ -108,12 +108,6 @@ export default function Topic() {
           ))}
         </div>
         </div>
-        <div className="h-10 w-auto bg-slate-300 my-10 rounded-lg"></div>
-        <div className="p-5 text-center">
-          <h2 className="py-10 text-lg font-semibold tracking-tight text-gray-900 sm:text-6xl"> Algo<span className="text-slate-500">rithm</span> </h2>
-
-        <h2 className="py-10 text-lg font-semibold tracking-tight text-gray-900 sm:text-5xl">Work in Progress</h2>
-       </div>
       </MaxWidthWrapper>
     </>
   );

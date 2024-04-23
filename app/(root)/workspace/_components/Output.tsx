@@ -1,15 +1,16 @@
-"use client"
-
 import React from 'react';
-import { Box, Button, Text, useToast } from "@chakra-ui/react";
+import { Box, Button, Text, useToast, useBreakpointValue } from "@chakra-ui/react";
 import axios from 'axios';
 
+
 interface OutputProps {
-  editorRef: React.MutableRefObject<any>; // Adjust type as needed
+  editorRef: React.MutableRefObject<any>;
   language: string;
 }
 
-const Output: React.FC<OutputProps> = ({ editorRef, language }) => {
+// Define Output component with forwardRef
+const Output = React.forwardRef<any, OutputProps>((props, ref) => {
+  const { editorRef, language } = props;
   const toast = useToast();
   const [output, setOutput] = React.useState<string[] | null>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -21,8 +22,27 @@ const Output: React.FC<OutputProps> = ({ editorRef, language }) => {
     try {
       setIsLoading(true);
       const response = await axios.post("/api/executeCode", { language, sourceCode });
-      const result = response.data; // Assuming the result is directly available in the response data
+      const result = response.data;
       setOutput(result.output.split("\n"));
+
+      // Extract CPU time and memory usage from the response
+      const cpuTime = parseFloat(result.cpuTime).toFixed(2);
+      const memoryUsage = parseInt(result.memory);
+
+      // Display CPU time and memory usage in a toast
+      toast({
+        title: "Execution Info",
+        description: (
+          <div>
+            <p>CPU Time: {cpuTime} ms</p>
+            <p>Memory Usage: {memoryUsage} KB</p>
+          </div>
+        ),
+        status: "info",
+        duration: 6000,
+        isClosable: true,
+        position: "top",
+      });
     } catch (error: any) {
       console.error(error);
       const errorMessage = error.response?.data?.error || "Unable to run code";
@@ -37,8 +57,16 @@ const Output: React.FC<OutputProps> = ({ editorRef, language }) => {
     }
   };
 
+  // Use useBreakpointValue to determine the width of the Box
+  const width = useBreakpointValue({ base: "100%", md: "50%" });
+
+  // Assign runCode to the ref for access from the parent component
+  React.useImperativeHandle(ref, () => ({
+    runCode,
+  }));
+
   return (
-    <Box w="50%">
+    <Box w={width}>
       <Text mb={2} fontSize="lg">
         Output
       </Text>
@@ -57,7 +85,8 @@ const Output: React.FC<OutputProps> = ({ editorRef, language }) => {
         color={isError ? "red.400" : ""}
         border="1px solid"
         borderRadius={4}
-        borderColor={isError ? "red.500" : "#333"}
+        borderColor={isError ? "red.500" : "#E2E8F0"} // Adjust border color for light theme
+        bg="#EDF2F7" // Adjust background color for light theme
       >
         {output
           ? output.map((line, i) => <Text key={i}>{line}</Text>)
@@ -65,6 +94,6 @@ const Output: React.FC<OutputProps> = ({ editorRef, language }) => {
       </Box>
     </Box>
   );
-};
+});
 
 export default Output;
