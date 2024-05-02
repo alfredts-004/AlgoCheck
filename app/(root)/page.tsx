@@ -30,7 +30,7 @@ const perks = [
     name: 'Problem Statements', 
     Icon: Keyboard,
     description:
-      "  Access a wide range of DSA problem statements to practice and enhance problem-solving skills.",
+      "  Access a wide range of Data Structure problem statements to practice and enhance problem-solving skills.",
   },
 ]
 
@@ -46,7 +46,7 @@ export default function Home() {
             <span className="text-blue-600">Problem</span> at a time. 
           </h1>
           <p className="mt-6 text-lg max-w-prose text-muted-foreground">
-          Master DSA like a boss! Dive into algorithms, conquer data structures, and level up your coding game. Your shortcut to success starts here!
+          Master Data Structure like a boss! Dive into algorithms, conquer data structures, and level up your coding game. Your shortcut to success starts here!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 mt-6">
             <SignedOut>
