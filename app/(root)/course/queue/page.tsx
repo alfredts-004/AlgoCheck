@@ -5,7 +5,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button, buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import Video from "next-video";
-import queue from "@/videos/Queue.mp4";
 
 const content = [
   {
@@ -89,7 +88,7 @@ int main() {
 
     return 0;
 }`,
-    video: queue,
+    video: null,
   },
   // Add more content here if needed
 ];
