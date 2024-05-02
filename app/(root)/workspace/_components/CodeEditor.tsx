@@ -1,22 +1,19 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Box, HStack, Button, useBreakpointValue } from "@chakra-ui/react";
-import { Editor } from "@monaco-editor/react";
+import { Box, HStack, Button, VStack, useBreakpointValue } from "@chakra-ui/react";
+import Editor, { useMonaco } from "@monaco-editor/react";
+import * as monaco from "monaco-editor";
 import LanguageSelector from "./LanguageSelector";
 import { CODE_SNIPPETS, CodeSnippets } from "@/constants";
 import Output from "./Output";
-import { Tabs, TabsTrigger, TabsContent, TabsList } from "@/components/ui/tabs";
 
 interface CodeEditorProps {}
 
 const CodeEditor: React.FC<CodeEditorProps> = () => {
   const [value, setValue] = useState<string>("");
   const [language, setLanguage] = useState<string>("C");
-  const [tabValue, setTabValue] = useState<string>("Editor");
   const editorRef = useRef<any>(null);
-
-  // Create a reference for the Output component
   const outputRef = useRef<any>(null);
 
   const onSelect = (language: string) => {
@@ -24,19 +21,17 @@ const CodeEditor: React.FC<CodeEditorProps> = () => {
     setValue((CODE_SNIPPETS as CodeSnippets)[language]);
   };
 
-  const handleEditorChange = (event: any) => {
-    setValue(event.target.value || "");
-  };
-
-  const handleRunClick = () => {
-    // Switch to Output tab
-    setTabValue("Output");
-    
-    // Call the runCode function in the Output component
-    if (outputRef.current) {
-      outputRef.current.runCode();
+  const handleEditorChange = (
+    newValue: string | undefined,
+    event?: monaco.editor.IModelContentChangedEvent
+  ) => {
+    // Use the new value in your state update
+    if (newValue !== undefined) {
+      setValue(newValue);
     }
   };
+  
+
 
   // Determine the layout based on the screen size
   const isVerticalLayout = useBreakpointValue({ base: true, md: false });
@@ -44,50 +39,34 @@ const CodeEditor: React.FC<CodeEditorProps> = () => {
   return (
     <Box>
       {isVerticalLayout ? (
-        <>
-          <HStack spacing={250} marginBottom={4}>
-            <LanguageSelector language={language} onSelect={onSelect} />
-            <Button onClick={handleRunClick} colorScheme="blue">
-              Run
-            </Button>
-          </HStack>
-          <Tabs value={tabValue} onValueChange={setTabValue} className="w-[400px]">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="Editor">Editor</TabsTrigger>
-              <TabsTrigger value="Output">Output</TabsTrigger>
-            </TabsList>
-            <TabsContent value="Editor">
-              <Box w="100%">
-                <Editor
-                  options={{
-                    minimap: {
-                      enabled: false,
-                    },
-                  }}
-                  height="75vh"
-                  theme="vs-light" // Use white (light) theme for the editor
-                  language={language}
-                  defaultValue={(CODE_SNIPPETS as CodeSnippets)[language]}
-                  onMount={(editor) => {
-                    editorRef.current = editor;
-                    editor.focus();
-                  }}
-                  value={value}
-                  onChange={handleEditorChange}
-                />
-              </Box>
-            </TabsContent>
-
-            <TabsContent value="Output">
-              <Output
-                ref={outputRef}
-                editorRef={editorRef}
-                language={language}
-              />
-            </TabsContent>
-          </Tabs>
-        </>
+        // Vertical layout for mobile screens
+        <VStack spacing={8}>
+          <LanguageSelector language={language} onSelect={onSelect} />
+          <Editor
+            options={{
+              minimap: {
+                enabled: false,
+              },
+            }}
+            height="75vh" // Adjust the height for a better view in vertical layout
+            theme="vs-light"
+            language={language}
+            defaultValue={(CODE_SNIPPETS as CodeSnippets)[language]}
+            onMount={(editor) => {
+              editorRef.current = editor;
+              editor.focus();
+            }}
+            value={value}
+            onChange={handleEditorChange}
+          />
+          <Output
+            ref={outputRef}
+            editorRef={editorRef}
+            language={language}
+          />
+        </VStack>
       ) : (
+        // Horizontal layout for larger screens
         <HStack spacing={4}>
           <Box w="50%">
             <LanguageSelector language={language} onSelect={onSelect} />
@@ -98,7 +77,7 @@ const CodeEditor: React.FC<CodeEditorProps> = () => {
                 },
               }}
               height="75vh"
-              theme="vs-light" // Use white (light) theme for the editor
+              theme="vs-light"
               language={language}
               defaultValue={(CODE_SNIPPETS as CodeSnippets)[language]}
               onMount={(editor) => {

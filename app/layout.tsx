@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   title: "AlgoCheck",
   description: "Online code learning platform",
   icons: {
-    icon: '/assets/images/logo.svg'
+    icon: '/assets/images/Favicon.png'
   }
 };
 

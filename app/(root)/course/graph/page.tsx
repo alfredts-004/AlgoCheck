@@ -7,126 +7,138 @@ import Link from "next/link";
 
 const content = [
   {
-    heading: "1. What is a Stack?",
-    paragraph: `A stack is a linear data structure that follows the Last In, First Out (LIFO) principle. 
-    It means that the element inserted last is the first one to be removed.`,
+    heading: "1. Graph Representation",
+    paragraph: `A graph is a data structure that consists of a set of vertices (nodes) and a set of edges that connect pairs of vertices. Graphs can be directed or undirected and may have weighted edges.`,
     code: null,
   },
   {
-    heading: "2. How to Implement a Stack using an Array?",
-    paragraph: `You can implement a stack using an array by performing push and pop operations. 
-    Push operation adds an element to the top of the stack, and pop operation removes the top element.`,
+    heading: "2. Adjacency Matrix Representation",
+    paragraph: `An adjacency matrix is a two-dimensional array where each row and column represents a vertex, and the value at the intersection indicates whether an edge exists between the vertices. Here's how to implement a graph using an adjacency matrix:`,
     code: `#include <stdio.h>
-#include <stdlib.h>
 
-#define MAX_SIZE 100
+#define MAX_VERTICES 100
 
-// Structure to represent a stack
+// Graph structure
 typedef struct {
-    int arr[MAX_SIZE];
-    int top;
-} Stack;
+    int adjMatrix[MAX_VERTICES][MAX_VERTICES];
+    int numVertices;
+} Graph;
 
-// Function to initialize the stack
-void init(Stack *stack) {
-    stack->top = -1;
-}
-
-// Function to check if the stack is empty
-int isEmpty(Stack *stack) {
-    return stack->top == -1;
-}
-
-// Function to check if the stack is full
-int isFull(Stack *stack) {
-    return stack->top == MAX_SIZE - 1;
-}
-
-// Function to push an element onto the stack
-void push(Stack *stack, int value) {
-    if (isFull(stack)) {
-        printf("Stack Overflow\n");
-        return;
+// Function to create a graph with n vertices
+void createGraph(Graph* graph, int n) {
+    graph->numVertices = n;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            graph->adjMatrix[i][j] = 0; // Initialize adjacency matrix
+        }
     }
-    stack->arr[++stack->top] = value;
 }
 
-// Function to pop an element from the stack
-int pop(Stack *stack) {
-    if (isEmpty(stack)) {
-        printf("Stack Underflow\n");
-        exit(EXIT_FAILURE);
+// Function to add an edge
+void addEdge(Graph* graph, int src, int dest) {
+    graph->adjMatrix[src][dest] = 1; // Set adjacency matrix
+    graph->adjMatrix[dest][src] = 1; // Set reverse for undirected graph
+}
+
+// Function to print the adjacency matrix
+void printGraph(Graph* graph) {
+    for (int i = 0; i < graph->numVertices; i++) {
+        for (int j = 0; j < graph->numVertices; j++) {
+            printf("%d ", graph->adjMatrix[i][j]);
+        }
+        printf("\n");
     }
-    return stack->arr[stack->top--];
 }
 
 int main() {
-    Stack stack;
-    init(&stack);
+    Graph graph;
+    createGraph(&graph, 4);
 
-    // Pushing elements onto the stack
-    push(&stack, 10);
-    push(&stack, 20);
-    push(&stack, 30);
+    addEdge(&graph, 0, 1);
+    addEdge(&graph, 1, 2);
+    addEdge(&graph, 2, 3);
+    addEdge(&graph, 3, 0);
 
-    // Popping elements from the stack
-    printf("Popped element: %d\n", pop(&stack));
-    printf("Popped element: %d\n", pop(&stack));
+    printf("Adjacency matrix of the graph:\n");
+    printGraph(&graph);
 
     return 0;
 }`,
   },
-  // Add more content here
+  {
+    heading: "3. Adding an Edge",
+    paragraph: `To add an edge in the graph, use the following function. It takes the source and destination vertices as arguments and sets the corresponding elements in the adjacency matrix.`,
+    code: `// Function to add an edge
+void addEdge(Graph* graph, int src, int dest) {
+    graph->adjMatrix[src][dest] = 1; // Set adjacency matrix
+    graph->adjMatrix[dest][src] = 1; // Set reverse for undirected graph
+}`,
+  },
+  {
+    heading: "4. Printing the Graph",
+    paragraph: `To print the graph, use the following function. It iterates through the adjacency matrix and prints the values to represent the graph's structure.`,
+    code: `// Function to print the adjacency matrix
+void printGraph(Graph* graph) {
+    for (int i = 0; i < graph->numVertices; i++) {
+        for (int j = 0; j < graph->numVertices; j++) {
+            printf("%d ", graph->adjMatrix[i][j]);
+        }
+        printf("\\n");
+    }
+}`,
+  },
+  // Add more content here as needed
 ];
+
 const problem_statement = [
   {
     problem:
-      "Q1) Implement Stack: Write a C program to implement a stack using an array.",
+      "Q1) Depth-First Search: Write a C program to perform depth-first search (DFS) on a graph using an adjacency matrix.",
     id: "1",
   },
   {
     problem:
-      "Q2) Reverse a String: Write a C program to reverse a string using a stack.",
+      "Q2) Breadth-First Search: Write a C program to perform breadth-first search (BFS) on a graph using an adjacency matrix.",
     id: "2",
   },
   {
     problem:
-      "Q3) Evaluate Postfix Expression: Write a C program to evaluate a postfix expression using a stack.",
+      "Q3) Finding Shortest Path: Write a C program to find the shortest path between two vertices using an adjacency matrix.",
     id: "3",
   },
   {
     problem:
-      "Q4) Check Balanced Parentheses: Write a C program to check if a given expression has balanced parentheses using a stack.",
+      "Q4) Check Cycle: Write a C program to check if a graph contains a cycle using an adjacency matrix.",
     id: "4",
   },
   {
     problem:
-      "Q5) Infix to Postfix Conversion: Write a C program to convert an infix expression to postfix using a stack.",
+      "Q5) Topological Sort: Write a C program to perform topological sort on a directed acyclic graph using an adjacency matrix.",
     id: "5",
   },
-  // Add more problem statements here
+  // Add more problem statements here as needed
 ];
 
-export default function Stack() {
+export default function Graph() {
   return (
     <>
       <MaxWidthWrapper>
         <div className="item-center justify-center p-6">
-          <Tabs defaultValue="Stack" className="w-auto">
+          <Tabs defaultValue="Graph" className="w-auto">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="Stack" className="">
-                Stack
+              <TabsTrigger value="Graph" className="">
+                Graph
               </TabsTrigger>
               <TabsTrigger value="Problems" className="">
                 Problems Statement
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent key="Stack" value="Stack">
+            <TabsContent key="Graph" value="Graph">
               <div className="h-auto w-full bg-slate-200 p-2 rounded-lg">
                 <article className="bg-white p-3">
                   <h2 className="p-3 text-xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                    Stack
+                    Graph
                   </h2>
                   <div className="p-2">
                     {content.map((cont) => (

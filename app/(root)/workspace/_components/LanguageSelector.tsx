@@ -27,7 +27,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ language, onSelect 
               _hover={{
                 color: ACTIVE_COLOR,
                 bg: "gray.100",
-              }}
+              }}  
               onClick={() => onSelect(lang)}
             >
               <Text>{lang}</Text>

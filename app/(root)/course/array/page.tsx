@@ -164,7 +164,7 @@ export default function Array() {
 
             <TabsContent key="Array" value="Array">
               <div className="h-auto w-full bg-slate-200 p-2 rounded-lg">
-                <article className="bg-white p-3">
+              <article className="bg-white p-3">
                   <h2 className="p-3 text-xl font-bold tracking-tight text-gray-900 sm:text-4xl">
                     Array
                   </h2>
@@ -179,14 +179,19 @@ export default function Array() {
                         </p>
 
                         {cont.code ? (
-                          <div className="bg-slate-200 grid place-items-center h-auto p-1 m-3">
+                          <div
+                            className="bg-slate-200 grid place-items-center h-auto p-1 m-3"
+                            style={{ overflowX: "auto", maxWidth: "100%" }}
+                          >
                             <div className="p-4">
                               <SyntaxHighlighter
                                 language="c"
-                                style={docco} // Using the docco style for syntax highlighting
+                                style={docco}
                                 customStyle={{
                                   padding: "16px",
                                   borderRadius: "12px",
+                                  whiteSpace: "pre-wrap",
+                                  overflowX: "auto",
                                 }}
                                 wrapLongLines={true}
                               >
